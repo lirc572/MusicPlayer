@@ -82,6 +82,7 @@ class MusicClient:
                 elif cmd == "stop":
                     current_player.stop()
                 elif cmd.split()[0] == "load":
+                    current_player.stop()
                     current_player = self.musicPlayer(cmd.split()[1])
                     print("Done!")
                 elif cmd.split()[0] == "search":
