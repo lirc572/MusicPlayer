@@ -67,8 +67,9 @@ class MusicClient:
         return vlc.MediaPlayer(self._music_server + id)
     def main(self):
         print("Welcome to Netease Cloud Music CLI!")
-        print("Enter commands below (enter help to show helps)")
+        print("Enter commands below (enter help to show helps)\n")
         current_player = 0
+        max_numbers_shown = 100
         while True:
             try:
                 cmd = input()
@@ -85,13 +86,21 @@ class MusicClient:
                     print("Done!")
                 elif cmd.split()[0] == "search":
                     songs = self.searchMusic(cmd[7:])
-                    for song in songs:
-                        song_text = song["name"] + "    "
+                    for i in range(max_numbers_shown if len(songs) > max_numbers_shown else len(songs)):
+                        song = songs[i]
+                        song_text = str(song["id"]) + "\n  "
+                        song_text += song["name"] + "    "
                         for artist in song["artists"]:
                             song_text += artist["name"] + " "
                         song_text += "   " + song["album"]["name"] + "\n"
-                        song_text += "  " + str(song["id"])
                         print(song_text)
+                elif cmd.split()[0] == "number":
+                    if len(cmd.split()) == 1:
+                        print(max_numbers_shown)
+                    else:
+                        assert int(cmd.split()[1]) > 0
+                        max_numbers_shown = int(cmd.split()[1])
+                        print("Done!")
                 elif cmd == "exit" or cmd == "quit":
                     return 0
                 print()
